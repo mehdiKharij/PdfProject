@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire de Génération de PDF</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #ffffff;
+            color: #333;
+            padding: 15px 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar img {
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .navbar a {
+            color: #333;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            color: #007bff;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"], input[type="number"], select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus, select:focus {
+            border-color: #f1423e;
+            outline: none;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #f1423e;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #f1423e;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .dynamic-fields-container, .checkbox-fields-container {
+            margin-top: 20px;
+        }
+
+        .dynamic-fields .form-group, .checkbox-fields .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .dynamic-fields input, .checkbox-fields input {
+            margin-right: 10px;
+            flex: 1;
+        }
+
+        .remove-button {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        .remove-button img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .remove-button:hover img {
+            opacity: 0.7;
+        }
+
+        .add-field-button, .add-checkbox-button {
+            background-color: #28a745;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .add-field-button:hover, .add-checkbox-button:hover {
+            background-color: #218838;
+        }
+
+        .add-field-button:active, .add-checkbox-button:active {
+            transform: scale(0.98);
+        }
+
+        .checkbox-options {
+            margin-top: 10px;
+            margin-left: 20px;
+        }
+
+        .checkbox-options .form-group {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <a href="https://www.attijariwafabank.com/fr">
+        <img src="/logo.png" alt="Logo">
+    </a>
+    <div>
+        <a href="#"></a>
+        <a href="#"></a>
+        <a href="#"></a>
+    </div>
+</div>
+
+<div class="container">
+    <form action="/pdf/createTemplate" method="post">
+        <div class="form-group">
+            <label for="title">Titre du Modèle PDF:</label>
+            <input type="text" id="title" name="title" required aria-required="true">
+        </div>
+        <div class="dynamic-fields-container">
+            <div class="dynamic-fields" id="dynamicFields">
+                <div class="form-group">
+                    <input type="text" name="key1" placeholder="Clé 1" required aria-required="true">
+                    <input type="text" name="value1" placeholder="Identifiant du champ de valeur 1">
+                    <button type="button" class="remove-button" aria-label="Supprimer ce champ" onclick="removeField(this)">
+                        <img src="/delete.png" alt="Supprimer">
+                    </button>
+                </div>
+            </div>
+            <button type="button" class="add-field-button" aria-label="Ajouter un nouveau champ" onclick="addField()">Ajouter un champ</button>
+        </div>
+        <div class="checkbox-fields-container">
+            <div class="checkbox-fields" id="checkboxFields">
+                <div class="form-group">
+                    <input type="text" name="checkbox_label1" placeholder="Étiquette de la case à cocher 1" required aria-required="true">
+                    <input type="text" name="checkbox_options1" placeholder="Options séparées par des virgules (option1,option2)">
+                    <button type="button" class="remove-button" aria-label="Supprimer cette case à cocher" onclick="removeCheckbox(this)">
+                        <img src="/delete.png" alt="Supprimer">
+                    </button>
+                </div>
+            </div>
+            <button type="button" class="add-checkbox-button" aria-label="Ajouter une case à cocher" onclick="addCheckbox()">Ajouter une case à cocher</button>
+        </div>
+        <div class="button-container">
+            <button type="submit">Générer PDF</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    let fieldIndex = 1;
+    let checkboxIndex = 1;
+
+    function addField() {
+        fieldIndex++;
+        const container = document.getElementById('dynamicFields');
+        const fieldDiv = document.createElement('div');
+        fieldDiv.className = 'form-group';
+        fieldDiv.innerHTML = `
+            <input type="text" name="key${fieldIndex}" placeholder="Clé ${fieldIndex}" required aria-required="true">
+            <input type="text" name="value${fieldIndex}" placeholder="Identifiant du champ de valeur ${fieldIndex}">
+            <button type="button" class="remove-button" aria-label="Supprimer ce champ" onclick="removeField(this)">
+                <img src="/delete.png" alt="Supprimer">
+            </button>
+        `;
+        container.appendChild(fieldDiv);
+    }
+
+    function removeField(button) {
+        button.parentElement.remove();
+    }
+
+    function addCheckbox() {
+        checkboxIndex++;
+        const container = document.getElementById('checkboxFields');
+        const checkboxDiv = document.createElement('div');
+        checkboxDiv.className = 'form-group';
+        checkboxDiv.innerHTML = `
+            <input type="text" name="checkbox_label${checkboxIndex}" placeholder="Étiquette de la case à cocher ${checkboxIndex}" required aria-required="true">
+            <input type="text" name="checkbox_options${checkboxIndex}" placeholder="Options séparées par des virgules (option1,option2)">
+            <button type="button" class="remove-button" aria-label="Supprimer cette case à cocher" onclick="removeCheckbox(this)">
+                <img src="/delete.png" alt="Supprimer">
+            </button>
+        `;
+        container.appendChild(checkboxDiv);
+    }
+
+    function removeCheckbox(button) {
+        button.parentElement.remove();
+    }
+</script>
+</body>
+</html>
