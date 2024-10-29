@@ -1,0 +1,73 @@
+/* Style de la barre de navigation */
+.navbar {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #ffffff; /* Fond blanc */
+    color: #333; /* Texte en couleur sombre */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre douce */
+    font-family: Arial, sans-serif;
+}
+
+.navbar-logo {
+    height: 60px;
+    margin-right: 10px;
+}
+
+.navbar-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Container du formulaire */
+.formulaire-facture {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.form-container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Style des champs du formulaire */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Bouton de soumission */
+.submit-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #f65c1f;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #e0551b;
+}
